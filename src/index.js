@@ -3,6 +3,8 @@ import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import auth from "./routes/auth";
+import register from "./routes/register";
+import Bromise from "bluebird"
 
 const app = express();
 app.use(express.json());
@@ -13,10 +15,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", auth);
+app.use("/api/user", register);
 
-// async function startServer() {
-//   await
-// }
+// old ip address 157.51.92.157/32
+mongoose.Promise = Bromise
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,

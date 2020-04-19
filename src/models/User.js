@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 // Todo: validate email later
 const schema = new mongoose.Schema(
   {
@@ -10,13 +8,12 @@ const schema = new mongoose.Schema(
       lowercase: true,
       indexes: true,
     },
-    passwordHash: {
+    password: {
       type: String,
       required: true,
     },
   },
   { timestamps: true }
 );
-
 
 export default mongoose.model("User", schema);
