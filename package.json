@@ -13,6 +13,9 @@
     "@types/mongoose": "^5.7.9",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
     "nodemon": "^2.0.2"
   },
   "dependencies": {
@@ -21,6 +24,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.7"
+    "lodash": "^4.17.15",
+    "mongoose": "^5.9.7",
+    "mongoose-unique-validator": "^2.0.3"
   }
 }
