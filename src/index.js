@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import auth from "./routes/auth";
 import users from "./routes/users";
-import Bromise from "bluebird"
+import Bromise from "bluebird";
+import {confirmation}  from "./routes/confirmatoin";
 
 const app = express();
 app.use(express.json());
@@ -17,11 +18,14 @@ app.get("/", (req, res) => {
 app.use("/api/auth", auth);
 app.use("/api/users", users);
 
+app.post("/confirmation", confirmation);
+
 // old ip address 157.51.92.157/32
-mongoose.Promise = Bromise
+mongoose.Promise = Bromise;
 mongoose
   .connect(process.env.MONGODB_URI, {
-  	useCreateIndex: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

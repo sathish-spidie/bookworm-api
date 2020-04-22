@@ -17,6 +17,7 @@ const schema = new mongoose.Schema(
       required: true,
     },
     confirmed: { type: Boolean, default: false },
+    confirmationToken : { type : String , default : ""}
   },
   { timestamps: true }
 );
@@ -25,6 +26,7 @@ schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     {
       email: this.email,
+      confirmed : this.confirmed,
     },
     process.env.JWTSECRET
   );
@@ -41,6 +43,15 @@ schema.methods.toAuthJSON = function toAuthJSON() {
 schema.methods.setPassword = async function setPassword(password) {
   this.passwordHash = await bcrypt.hash(password, 10);
 };
+
+schema.methods.setConfirmationToken= function setConfirmationToken() {
+  this.confirmationToken= this.generateJWT()
+};
+
+schema.methods.generateConfirmationUrl= function generateConfirmationUrl() {
+return `${process.env.HOST}/confirmation/${this.confirmationToken}`
+};
+
 schema.methods.isValidPassword = function isValidPassword(password) {
   return bcrypt.compare(password, this.passwordHash);
 };
