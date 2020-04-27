@@ -17,7 +17,7 @@ const schema = new mongoose.Schema(
       required: true,
     },
     confirmed: { type: Boolean, default: false },
-    confirmationToken : { type : String , default : ""}
+    confirmationToken: { type: String, default: "" },
   },
   { timestamps: true }
 );
@@ -26,9 +26,21 @@ schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     {
       email: this.email,
-      confirmed : this.confirmed,
+      confirmed: this.confirmed,
     },
     process.env.JWTSECRET
+  );
+};
+
+schema.methods.generateResetPasswordToken = function generateResetPasswordToken() {
+  return jwt.sign(
+    {
+      _id: this._id,
+    },
+    process.env.JWTSECRET,
+    {
+      expiresIn: "1h",
+    }
   );
 };
 
@@ -44,12 +56,18 @@ schema.methods.setPassword = async function setPassword(password) {
   this.passwordHash = await bcrypt.hash(password, 10);
 };
 
-schema.methods.setConfirmationToken= function setConfirmationToken() {
-  this.confirmationToken= this.generateJWT()
+schema.methods.setConfirmationToken = function setConfirmationToken() {
+  this.confirmationToken = this.generateJWT();
 };
 
-schema.methods.generateConfirmationUrl= function generateConfirmationUrl() {
-return `${process.env.HOST}/confirmation/${this.confirmationToken}`
+schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
+  return `${process.env.HOST}/api/auth/confirmation/${this.confirmationToken}`;
+};
+
+schema.methods.generateResetPasswordUrl = function generateResetPasswordUrl() {
+  return `${
+    process.env.HOST
+  }/api/auth/validate_token/${this.generateResetPasswordToken()}`;
 };
 
 schema.methods.isValidPassword = function isValidPassword(password) {
