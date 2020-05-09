@@ -4,7 +4,10 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import auth from "./routes/auth";
 import users from "./routes/users";
+import books from "./routes/books";
+// import stream from "./routes/stream";
 import Bromise from "bluebird";
+import 'babel-polyfill'
 
 const app = express();
 app.use(express.json());
@@ -16,7 +19,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", auth);
 app.use("/api/users", users);
-
+app.use("/api/books", books);
+// app.use("/api/stream", stream);
 
 // old ip address 157.51.92.157/32
 mongoose.Promise = Bromise;
